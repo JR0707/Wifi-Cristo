@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Wi-Fi Conectados con Cristo</title>
+  <style>
+    /* RESET */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      position: relative;
+      overflow-x: hidden;
+    }
+    
+    /* Fondo animado */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                  radial-gradient(circle at 40% 40%, rgba(120, 119, 198, 0.2) 0%, transparent 50%);
+      animation: float 20s ease-in-out infinite;
+      z-index: -1;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(180deg); }
+    }
+    
+    .card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.2);
+      max-width: 550px;
+      width: 100%;
+      text-align: center;
+      transition: all 0.3s ease;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 50px rgba(0, 0, 0, 0.3);
+    }
+    
+    .wifi-header {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .wifi-icon {
+      background: linear-gradient(45deg, #667eea, #764ba2);
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 10px;
+      font-size: 24px;
+      font-weight: bold;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .wifi-icon::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+      transform: rotate(45deg);
+      animation: shine 3s infinite;
+    }
+    
+    @keyframes shine {
+      0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+      50% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+      100% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+    }
+    
+    .title {
+      font-size: 24px;
+      font-weight: bold;
+      background: linear-gradient(45deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    
+    .wifi-info {
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      padding: 20px;
+      border-radius: 15px;
+      margin: 20px 0;
+      border-left: 5px solid #667eea;
+    }
+    
+    .wifi-info p {
+      font-size: 18px;
+      margin: 10px 0;
+      font-weight: 500;
+    }
+    
+    .wifi-info span {
+      font-weight: bold;
+      color: #667eea;
+    }
+    
+    .tema-titulo {
+      font-size: 18px;
+      font-weight: bold;
+      color: #764ba2;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 10px 15px;
+      background: rgba(118, 75, 162, 0.1);
+      border-radius: 8px;
+      border: 2px solid rgba(118, 75, 162, 0.3);
+    }
+    
+    .versiculo {
+      margin: 20px 0;
+      padding: 20px;
+      font-size: 18px;
+      color: #444;
+      background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+      border-radius: 15px;
+      font-style: italic;
+      font-weight: 500;
+      line-height: 1.6;
+      position: relative;
+      box-shadow: 0 4px 15px rgba(255, 234, 167, 0.4);
+    }
+    
+    .explicacion-container {
+      margin: 15px 0;
+    }
+    
+    .toggle-explicacion {
+      background: linear-gradient(45deg, #00b894, #00cec9);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin: 0 auto;
+    }
+    
+    .toggle-explicacion:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 15px rgba(0, 184, 148, 0.4);
+    }
+    
+    .ojo {
+      font-size: 18px;
+      transition: all 0.3s ease;
+    }
+    
+    .ojo.cerrado {
+      transform: scaleY(0.3);
+    }
+    
+    .explicacion {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 10px;
+      font-size: 16px;
+      line-height: 1.5;
+      color: #555;
+      border-left: 4px solid #00b894;
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+    
+    .explicacion.visible {
+      display: block;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .invitacion {
+      margin-top: 25px;
+      padding: 20px;
+      font-size: 17px;
+      font-weight: bold;
+      background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+      border-radius: 15px;
+      color: #2d3436;
+      border: 2px solid rgba(255, 255, 255, 0.5);
+    }
+    
+    /* 📱 Responsive para móviles */
+    @media screen and (max-width: 480px) {
+      .card {
+        padding: 20px;
+        margin: 10px;
+      }
+    
+      .wifi-icon {
+        font-size: 20px;
+        padding: 6px 12px;
+      }
+    
+      .title {
+        font-size: 20px;
+      }
+    
+      .wifi-info p {
+        font-size: 16px;
+      }
+    
+      .versiculo {
+        font-size: 16px;
+        padding: 15px;
+      }
+    
+      .invitacion {
+        font-size: 15px;
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body onload="mostrarCita()">
+  <div class="card">
+    <div class="wifi-header">
+      <span class="wifi-icon">Wi <strong>Fi</strong></span>
+      <span class="title">CONECTADOS CON CRISTO</span>
+    </div>
+    
+    <div class="wifi-info">
+      <p><strong>RED:</strong> <span id="libro"></span></p>
+      <p><strong>CONTRASEÑA:</strong> <span id="capitulo"></span></p>
+    </div>
+    
+    
+    <div id="tema-titulo" class="tema-titulo"></div>
+    
+    <div id="versiculo" class="versiculo"></div>
+    
+    <div class="explicacion-container">
+      <button class="toggle-explicacion" onclick="toggleExplicacion()">
+        <span class="ojo" id="ojo">👁️</span>
+        <span id="toggle-text">Ver Explicación</span>
+      </button>
+      <div id="explicacion" class="explicacion"></div>
+    </div>
+    
+    <div class="invitacion">
+      Te invitamos al próximo culto para que tengas esa conexión con Dios
+    </div>
+  </div>
+
+  <script>
+    const citas = [
+      {
+        libro: "1 Tesalonicenses",
+        capitulo: "5:17",
+        texto: "Orad sin cesar.",
+        tema: "Conexión constante",
+        explicacion: "Así como un celular necesita señal continua para recibir datos, nuestra alma necesita la oración constante para estar conectada con Dios sin interrupción."
+      },
+      {
+        libro: "Juan",
+        capitulo: "14:6",
+        texto: "Jesús le dijo: Yo soy el camino, y la verdad, y la vida; nadie viene al Padre, sino por mí.",
+        tema: "Único canal de acceso",
+        explicacion: "Jesús es como el único proveedor de red espiritual. Sin Él, no hay forma de conectarse al Padre."
+      },
+      {
+        libro: "Salmos",
+        capitulo: "73:28",
+        texto: "Pero en cuanto a mí, el acercarme a Dios es el bien; he puesto en Jehová el Señor mi esperanza, para contar todas tus obras.",
+        tema: "Buscar señal de conexión",
+        explicacion: "Acercarse a Dios es como buscar Wi-Fi cuando no hay cobertura: nos movemos hasta encontrarlo, porque sabemos que lo necesitamos."
+      },
+      {
+        libro: "Efesios",
+        capitulo: "3:16-17",
+        texto: "Para que os dé, conforme a las riquezas de su gloria, el ser fortalecidos con poder en el hombre interior por su Espíritu; para que habite Cristo por la fe en vuestros corazones.",
+        tema: "Red interna permanente",
+        explicacion: "Cristo quiere residir en nuestro interior como una conexión Wi-Fi instalada, no temporal."
+      },
+      {
+        libro: "Hebreos",
+        capitulo: "10:22",
+        texto: "Acerquémonos con corazón sincero, en plena certidumbre de fe, purificados los corazones de mala conciencia, y lavados los cuerpos con agua pura.",
+        tema: "Conexión limpia y estable",
+        explicacion: "Así como un celular funciona mejor limpio y sin virus, así también debemos limpiar nuestro corazón para conectarnos bien con Dios."
+      },
+      {
+        libro: "Jeremías",
+        capitulo: "33:3",
+        texto: "Clama a mí, y yo te responderé, y te enseñaré cosas grandes y ocultas que tú no conoces.",
+        tema: "Llamada directa con respuesta asegurada",
+        explicacion: "Esta es una promesa de que la línea de comunicación con Dios nunca estará ocupada ni caerá la señal."
+      },
+      {
+        libro: "Romanos",
+        capitulo: "8:14",
+        texto: "Porque todos los que son guiados por el Espíritu de Dios, éstos son hijos de Dios.",
+        tema: "GPS espiritual",
+        explicacion: "El Espíritu Santo es como el GPS que te da direcciones precisas cuando estás conectado."
+      },
+      {
+        libro: "Apocalipsis",
+        capitulo: "3:20",
+        texto: "He aquí, yo estoy a la puerta y llamo; si alguno oye mi voz y abre la puerta, entraré a él, y cenaré con él, y él conmigo.",
+        tema: "Permiso de conexión",
+        explicacion: "Dios siempre está disponible, pero tú decides si conectarte o quedarte sin señal."
+      },
+      {
+        libro: "Proverbios",
+        capitulo: "3:5-6",
+        texto: "Fíate de Jehová de todo tu corazón, y no te apoyes en tu propia prudencia. Reconócelo en todos tus caminos, y él enderezará tus veredas.",
+        tema: "Dirección segura y conectada",
+        explicacion: "No dependas de tus datos internos (sabiduría humana), conéctate a la red de Dios."
+      },
+      {
+        libro: "Santiago",
+        capitulo: "4:8",
+        texto: "Acercaos a Dios, y él se acercará a vosotros. Pecadores, limpiad las manos; y vosotros los de doble ánimo, purificad vuestros corazones.",
+        tema: "Señal recíproca",
+        explicacion: "Mientras más te acerques, más fuerte será la conexión. Así como la señal mejora cerca del router, tu fe se fortalece cerca de Cristo."
+      },
+      {
+        libro: "Isaías",
+        capitulo: "40:31",
+        texto: "Pero los que esperan a Jehová tendrán nuevas fuerzas; levantarán alas como las águilas; correrán, y no se cansarán; caminarán, y no se fatigarán.",
+        tema: "Carga espiritual",
+        explicacion: "Esperar en Dios es como poner el celular a cargar: sales renovado y con batería completa para seguir adelante."
+      },
+      {
+        libro: "Salmos",
+        capitulo: "119:105",
+        texto: "Lámpara es a mis pies tu palabra, y lumbrera a mi camino.",
+        tema: "Luz guiada por la red",
+        explicacion: "Así como el celular necesita GPS iluminado para guiarte, la Palabra de Dios te alumbra cuando estás conectado a Él."
+      },
+      {
+        libro: "Isaías",
+        capitulo: "59:2",
+        texto: "Pero vuestras iniquidades han hecho división entre vosotros y vuestro Dios, y vuestros pecados han hecho ocultar de vosotros su rostro para no oír.",
+        tema: "Interferencia de señal",
+        explicacion: "El pecado es como un muro que bloquea la señal. Para estar conectados, hay que eliminar los obstáculos."
+      },
+      {
+        libro: "Juan",
+        capitulo: "10:27",
+        texto: "Mis ovejas oyen mi voz, y yo las conozco, y me siguen.",
+        tema: "Señal personalizada",
+        explicacion: "Cuando estás conectado a la red correcta, reconoces la voz de Jesús entre muchas."
+      },
+      {
+        libro: "Mateo",
+        capitulo: "5:14",
+        texto: "Vosotros sois la luz del mundo; una ciudad asentada sobre un monte no se puede esconder.",
+        tema: "Punto de acceso",
+        explicacion: "Cuando estás conectado a Cristo, tú también puedes transmitir esa señal a otros."
+      },
+      {
+        libro: "Mateo",
+        capitulo: "6:33",
+        texto: "Mas buscad primeramente el reino de Dios y su justicia, y todas estas cosas os serán añadidas.",
+        tema: "Priorizar la conexión",
+        explicacion: "Antes de buscar datos terrenales, busca la red del cielo. Esa señal nunca falla."
+      },
+      {
+        libro: "Filipenses",
+        capitulo: "4:6-7",
+        texto: "Por nada estéis afanosos, sino sean conocidas vuestras peticiones delante de Dios en toda oración y ruego, con acción de gracias.",
+        tema: "Comunicación activa",
+        explicacion: "No tengas miedo de enviarle tus mensajes a Dios: Él los recibe, los responde y te da paz."
+      },
+      {
+        libro: "2 Corintios",
+        capitulo: "5:17",
+        texto: "De modo que si alguno está en Cristo, nueva criatura es; las cosas viejas pasaron; he aquí todas son hechas nuevas.",
+        tema: "Renovación al conectarse",
+        explicacion: "Cuando te conectas a Cristo, te actualizas por completo como un sistema nuevo."
+      },
+      {
+        libro: "Gálatas",
+        capitulo: "5:22-23",
+        texto: "Mas el fruto del Espíritu es amor, gozo, paz, paciencia, benignidad, bondad, fe, mansedumbre, templanza.",
+        tema: "Resultados de buena señal",
+        explicacion: "Si estás bien conectado, tu vida mostrará resultados claros: paz, paciencia, gozo."
+      },
+      {
+        libro: "Efesios",
+        capitulo: "6:11",
+        texto: "Vestíos de toda la armadura de Dios, para que podáis estar firmes contra las asechanzas del diablo.",
+        tema: "Protección contra desconexiones",
+        explicacion: "La armadura espiritual es como un antivirus. Protege tu conexión de ataques externos que quieren apagar tu fe."
+      }
+    ];
+
+    let explicacionVisible = false;
+    
+    function mostrarCita() {
+      const cita = citas[Math.floor(Math.random() * citas.length)];
+      
+      document.getElementById("libro").innerText = cita.libro;
+      document.getElementById("capitulo").innerText = cita.capitulo;
+      document.getElementById("tema-titulo").innerText = cita.tema;
+      document.getElementById("versiculo").innerText = '"' + cita.texto + '"';
+      document.getElementById("explicacion").innerText = cita.explicacion;
+      
+      // Resetear explicación
+      explicacionVisible = false;
+      document.getElementById("explicacion").classList.remove("visible");
+      document.getElementById("toggle-text").innerText = "Ver Explicación";
+      document.getElementById("ojo").classList.remove("cerrado");
+    }
+    
+    function toggleExplicacion() {
+      const explicacion = document.getElementById("explicacion");
+      const toggleText = document.getElementById("toggle-text");
+      const ojo = document.getElementById("ojo");
+      
+      explicacionVisible = !explicacionVisible;
+      
+      if (explicacionVisible) {
+        explicacion.classList.add("visible");
+        toggleText.innerText = "Ocultar Explicación";
+        ojo.classList.add("cerrado");
+      } else {
+        explicacion.classList.remove("visible");
+        toggleText.innerText = "Ver Explicación";
+        ojo.classList.remove("cerrado");
+      }
+    }
+  </script>
+</body>
+</html>
